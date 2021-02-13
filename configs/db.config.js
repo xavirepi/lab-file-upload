@@ -12,3 +12,11 @@ mongoose
     console.error(`An error ocurred trying to connect to the database ${MONGODB_URI}: `, error);
     process.exit(1);
   });
+
+process.on('SIGINT', () => {
+  mongoose.connection
+    .close()
+    .then(() => console.log('Mongoose default connection disconnected through app termination'))
+    .catch(error => console.log('Error disconnecting from the database', error))
+    .finally(() => process.exit());
+})
